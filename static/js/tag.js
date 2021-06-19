@@ -1,7 +1,7 @@
 var Main = {
     data() {
       return {
-        dynamicTags: ['标签一', '标签二', '标签三'],
+        dynamicTags: [],
         inputVisible: false,
         inputValue: ''
       };
@@ -30,3 +30,17 @@ var Main = {
   }
 var Ctor = Vue.extend(Main)
 new Ctor().$mount('#app')
+
+$("#crawl").click(function(){
+  let dom_tag=$(".el-tag")
+  let keys=[]
+  for(let i=0;i<dom_tag.length;i++){
+    keys.push($.trim($(dom_tag[i]).text()))
+  }
+  $.post('/xxx',JSON.stringify({
+        key:keys
+      }),
+      function(data,status){
+
+      })
+})

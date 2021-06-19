@@ -7,42 +7,56 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="../static/css/tag.css">
     <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="../static/js/jquery.js"></script>
     <!-- 引入 echarts.js -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@^5.1.2/dist/echarts.min.js"></script>
 </head>
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <body bgcolor="#0a2e5d">
-<div id="search" style="height: 25vh;width: 100vw;background: aliceblue">
-    <div id="app">
-        <el-tag
-                :key="tag"
-                v-for="tag in dynamicTags"
-                closable
-                :disable-transitions="false"
-                @close="handleClose(tag)">
-            {% raw %}
-            {{ tag }}
-            {% endraw %}
-        </el-tag>
-        <el-input
-                class="input-new-tag"
-                v-if="inputVisible"
-                v-model="inputValue"
-                ref="saveTagInput"
-                size="small"
-                @keyup.enter.native="handleInputConfirm"
-                @blur="handleInputConfirm"
-        >
-        </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-    </div>
-</div>
-<div id="tables" style="height: 70vh;width: 100vw">
-    <div id="sex" style="width:30vw;height: 70vh;float: left"></div>
-    <div id="follower" style="width:37vw;height: 70vh;float: left"></div>
-    <div id="like" style="width:33vw;height: 70vh;float: left"></div>
-</div>
+<el-container>
+    <el-header>
+        <h1 style="text-align: center;">抖音数据爬取展示</h1>
+    </el-header>
+    <hr>
+    <br>
+    <br>
+    <el-main>
+        <div id="search" style="height: 25vh;width: 100vw;text-align: center">
+            {#            style="display:inline-block;"#}
+            <div id="app">
+                <span style="color:#409EFF;">请输入关键词：</span>
+                <el-tag
+                        :key="tag"
+                        v-for="tag in dynamicTags"
+                        closable
+                        :disable-transitions="false"
+                        @close="handleClose(tag)">
+                    {% raw %}
+                    {{ tag }}
+                    {% endraw %}
+                </el-tag>
+                <el-input
+                        class="input-new-tag"
+                        v-if="inputVisible"
+                        v-model="inputValue"
+                        ref="saveTagInput"
+                        size="small"
+                        @keyup.enter.native="handleInputConfirm"
+                        @blur="handleInputConfirm"
+                >
+                </el-input>
+                <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                <el-button type="success" round icon="el-icon-mouse" id="crawl">点击爬取</el-button>
+            </div>
+        </div>
+        <div id="tables" style="height: 70vh;width: 100vw">
+            <div id="sex" style="width:30vw;height: 70vh;float: left"></div>
+            <div id="follower" style="width:37vw;height: 70vh;float: left"></div>
+            <div id="like" style="width:33vw;height: 70vh;float: left"></div>
+        </div>
+    </el-main>
+</el-container>
 
 
 </body>

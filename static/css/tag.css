@@ -1,4 +1,4 @@
-@import url("//unpkg.com/element-ui@2.15.2/lib/theme-chalk/index.css");
+/*@import url("//unpkg.com/element-ui@2.15.2/lib/theme-chalk/index.css");*/
 
 .el-tag + .el-tag {
     margin-left: 10px;
