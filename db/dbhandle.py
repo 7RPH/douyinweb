@@ -91,16 +91,17 @@ def getNum():
 # 获得之前搜索的关键词
 def getKeywords():
     filepath = r'keyword.txt'
-    li = open(filepath, 'r',encoding='utf8').read().splitlines()
+    li = open(filepath, 'r', encoding='utf8').read().splitlines()
     res = []
     for i in li:
         if 'end' not in i:
             res.append(i)
     return {'tag': res}
 
+
 # 修改爬取数据时用于搜索的关键词
-def updateKeywords(keywords):#keywords={'keywords':['key','word','s']}
-    words=keywords['keywords']
+def updateKeywords(keywords):  # keywords={'keywords':['key','word','s']}
+    words = keywords['keywords']
     filepath = r'keyword.txt'
     # li = open(filepath, 'r', encoding='utf8').read().splitlines()
     # for i in words:
@@ -108,9 +109,10 @@ def updateKeywords(keywords):#keywords={'keywords':['key','word','s']}
     #         li[li.index(f'end {i}')]=li[i]
     #     elif i not in li:
     #         li.append(i)
-    res = open(filepath,'w',encoding='utf8')
+    res = open(filepath, 'w', encoding='utf8')
     res.write('\n'.join(words))
     res.close()
     return True
 
 # updateKeywords({'keywords':['i春秋','奇安信','四川大学','scu']})
+print(getKeywords())

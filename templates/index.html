@@ -3,21 +3,51 @@
 <head>
     <meta charset="utf-8">
     <title>ECharts</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../static/css/tag.css">
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
     <!-- 引入 echarts.js -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@^5.1.2/dist/echarts.min.js"></script>
 </head>
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <body bgcolor="#0a2e5d">
-<div id="search" style="height: 25vh;width: 100vw">{{ tag }}</div>
-<div id="tables" style="height: 75vh;width: 100vw">
-    <div id="sex" style="width:30vw;height: 75vh;float: left"></div>
-    <div id="follower" style="width:37vw;height: 75vh;float: left"></div>
-    <div id="like" style="width:33vw;height: 75vh;float: left"></div>
+<div id="search" style="height: 25vh;width: 100vw;background: aliceblue">
+    <div id="app">
+        <el-tag
+                :key="tag"
+                v-for="tag in dynamicTags"
+                closable
+                :disable-transitions="false"
+                @close="handleClose(tag)">
+            {% raw %}
+            {{ tag }}
+            {% endraw %}
+        </el-tag>
+        <el-input
+                class="input-new-tag"
+                v-if="inputVisible"
+                v-model="inputValue"
+                ref="saveTagInput"
+                size="small"
+                @keyup.enter.native="handleInputConfirm"
+                @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+    </div>
+</div>
+<div id="tables" style="height: 70vh;width: 100vw">
+    <div id="sex" style="width:30vw;height: 70vh;float: left"></div>
+    <div id="follower" style="width:37vw;height: 70vh;float: left"></div>
+    <div id="like" style="width:33vw;height: 70vh;float: left"></div>
 </div>
 
 
 </body>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../static/js/tag.js"></script>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var sexChart = echarts.init(document.getElementById('sex'));
@@ -155,6 +185,7 @@
     // 指定图表的配置项和数据
     var myColor = ['#00ebb4', '#00cbb4', '#00abb4', '#008bb4', '#006bb4', '#004bb4', '#002bb4', '#000bb4', '#020bb4', '#040bb4'];
     option = {
+        backgroundColor: '#0a2e5d',
         grid: {
             left: '0%',
             right: '5%',
