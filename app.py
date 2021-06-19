@@ -13,7 +13,20 @@ def hello_world():
     sex = getSex()
     like = getLike()
     num = getNum()
-    return render_template('index.html', **sex, **like, **num)
+    tag = getKeywords()
+    max = {'max': [like['likelist'][0]] * len(like['likelist'])}
+    return render_template('index.html', **sex, **like, **num, **max,**tag)
+
+
+@app.route('/reloading_tag', methods=['POST'])
+def update():
+    data=request.form
+    res=updateKeywords(data)
+    if res:
+        return {'msg': True}
+    else:
+        return {'msg': False}
+
 
 
 if __name__ == '__main__':
