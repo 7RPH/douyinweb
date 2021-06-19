@@ -130,8 +130,8 @@
                     },
                 },
                 labelLine: {
-                    length: 50,
-                    length2: 30,
+                    length: 30,
+                    length2: 20,
                     show: true,
                     color: '#00ffff'
                 }
@@ -201,127 +201,116 @@
     option = {
         backgroundColor: '#0a2e5d',
         grid: {
-            left: '4%',
-            top: '12%',
-            right: '3%',
-            bottom: '8%',
+            left: '0%',
+            right: '5%',
+            bottom: '5%',
+            top: '10%',
             containLabel: true
         },
-        xAxis: [{
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'none'
+            },
+            formatter: function (params) {
+                return params[0].name + '<br/>' +
+                    "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:rgba(36,207,233,0.9)'></span>" +
+                    params[0].seriesName + ' : ' + Number((params[0].value.toFixed(4) / 10000).toFixed(2)).toLocaleString() + ' 万赞<br/>'
+            }
+        },
+        backgroundColor: '#0a2e5d',
+        xAxis: {
             show: false,
-        }],
+            type: 'value'
+        },
         yAxis: [{
-            axisTick: 'none',
-            axisLine: 'none',
-            offset: '20',
+            type: 'category',
+            inverse: true,
             axisLabel: {
                 textStyle: {
                     color: '#ddd',
-                    fontSize: '12',
+                    fontSize: '14',
+                    lineHeight: 20,
+                },
+                // 调整左侧文字的3个属性，缺一不可
+                verticalAlign: 'bottom',
+                align: 'left',
+                //调整文字上右下左
+                padding: [0, -80, 10, 0],
+                formatter: function (value) {
+                    var res = value;
+                    if (res.length > 5) {
+                        res = res.substring(0, 4) + "..";
+                    }
+                    return res;
                 }
             },
-            data: {{ likename|safe }},
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            data: {{ likename|safe }}
         }, {
+            type: 'category',
+            inverse: true,
             axisTick: 'none',
             axisLine: 'none',
+            show: true,
             axisLabel: {
                 textStyle: {
                     color: '#ffffff',
-                    fontSize: '16',
-                }
-            },
-            data: []
-        }, {
-            name: '',
-            nameGap: '1',
-            nameTextStyle: {
-                color: '#ffffff',
-                fontSize: '16',
-            },
-            axisLine: {
-                lineStyle: {
-                    color: 'rgba(0,0,0,0)'
-                }
-            },
-            data: [],
-        }],
-        series: [{
-            name: '条',
-            type: 'bar',
-            yAxisIndex: 0,
-            data: {{ likelist|safe }},
-            label: {
-                normal: {
-                    show: true,
-                    position: 'right',
-                    textStyle: {
-                        color: '#ffffff',
-                        fontSize: '12',
-                    }
-                }
-            },
-            barWidth: 10,
-            itemStyle: {
-                normal: {
-                    color: function (params) {
-                        var num = myColor.length;
-                        return myColor[params.dataIndex % num]
-                    },
-                }
-            },
-            z: 2
-        }, {
-            name: '白框',
-            type: 'bar',
-            yAxisIndex: 1,
-            barGap: '-100%',
-            data: {{ likelist|safe }},
-            barWidth: 14,
-            itemStyle: {
-                normal: {
-                    color: '#0e2147',
-                    barBorderRadius: 5,
-                }
-            },
-            z: 1
-        }, {
-            name: '外框',
-            type: 'bar',
-            yAxisIndex: 2,
-            barGap: '-100%',
-            data: {{ likelist|safe }},
-            barWidth: 18,
-            itemStyle: {
-                normal: {
-                    color: function (params) {
-                        var num = myColor.length;
-                        return myColor[params.dataIndex % num]
-                    },
-                    barBorderRadius: 5,
-                }
-            },
-            z: 0
-        },
-            {
-                name: '外圆',
-                type: 'scatter',
-                hoverAnimation: false,
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                yAxisIndex: 0,
-                symbolSize: 24,
-                itemStyle: {
-                    normal: {
-                        color: function (params) {
-                            var num = myColor.length;
-                            return myColor[params.dataIndex % num]
-                        },
-                        opacity: 1,
+                    fontSize: '12'
+                },
+                formatter: function (value) {
+                    if (value >= 10000) {
+                        return (value / 10000).toLocaleString() + '万';
+                    } else {
+                        return value.toLocaleString();
                     }
                 },
-                z: 1
-            }
+            },
+            data: {{ likelist|safe }}
+        }],
+        series: [{
+            name: '点赞',
+            type: 'bar',
+            zlevel: 1,
+            itemStyle: {
+                normal: {
+                    barBorderRadius: 30,
+                    color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        offset: 0,
+                        color: 'rgb(57,89,255,1)'
+                    }, {
+                        offset: 1,
+                        color: 'rgb(46,200,207,1)'
+                    }]),
+                },
+            },
+            barWidth: 16,
+            data: {{ likelist|safe }}
+        },
+            {
+                name: '背景',
+                type: 'bar',
+                barWidth: 16,
+                barGap: '-100%',
+                data: {{ max|safe }},
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(24,31,68,1)',
+                        barBorderRadius: 30,
+                    }
+                },
+            },
         ]
     };
+
 
     // 使用刚指定的配置项和数据显示图表。
     followChart.setOption(option);
