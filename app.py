@@ -20,8 +20,13 @@ def hello_world():
 
 @app.route('/reloading_tag', methods=['POST'])
 def update():
-    data=request.form
-    res=updateKeywords(data)
+    data = request.values
+    for i in data:
+        print(i)
+        dic = json.loads(i)
+    # data=request.form
+    print(dic)
+    res=updateKeywords(dic)
     if res:
         return {'msg': True}
     else:

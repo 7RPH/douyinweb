@@ -38,7 +38,7 @@ $("#crawl").click(function(){
     keys.push($.trim($(dom_tag[i]).text()))
   }
   $.post('/reloading_tag',JSON.stringify({
-        key:keys
+        keywords:keys
       }),
       function(data,status){
 
