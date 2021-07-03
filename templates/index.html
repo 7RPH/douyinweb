@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ECharts</title>
+    <title>抖音数据分析</title>
 
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="../static/css/tag.css">
@@ -15,16 +15,9 @@
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <body bgcolor="#0a2e5d">
 <el-container>
-    <el-header>
-        <h1 style="text-align: center;">抖音数据爬取展示</h1>
-    </el-header>
-    <hr>
-    <br>
-    <br>
     <el-main>
-        <div id="search" style="height: 25vh;width: 100vw;text-align: center">
-            {#            style="display:inline-block;"#}
-            <div id="app">
+        <div id="app" style="height: 45vh;width: 100vw;text-align: center">
+            <div id="search" style="height: 10vh;width: 100vw;text-align: center">
                 <span style="color:#409EFF;">请输入关键词：</span>
                 <el-tag
                         :key="tag"
@@ -47,9 +40,17 @@
                 >
                 </el-input>
                 <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-                <el-button type="success" round icon="el-icon-mouse" id="crawl">点击爬取</el-button>
+                <el-button type="success" round icon="el-icon-mouse" id="crawl">点击设置</el-button>
+
+                <div id="show" style="height: 35vh;width: 100vw;text-align: center">
+                    <el-button type="success" round icon="el-icon-mouse" id="spider">开始爬取</el-button>
+                    <div id="tab">
+                        <iframe src="/showdata" frameborder="0" id="iframe"></iframe>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div id="tables" style="height: 70vh;width: 100vw">
             <div id="sex" style="width:30vw;height: 70vh;float: left"></div>
             <div id="follower" style="width:37vw;height: 70vh;float: left"></div>
@@ -65,7 +66,7 @@
     var Main = {
         data() {
             return {
-                dynamicTags: [],
+                dynamicTags: {{ tag|safe }},
                 inputVisible: false,
                 inputValue: ''
             };
@@ -105,11 +106,31 @@
                 keywords: keys
             }),
             function (data, status) {
-                console.log(data)
+                if (data['msg'] === true) {
+                    alert('设置成功');
+                } else {
+                    alert('设置失败');
+                }
             })
     })
 </script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script language="javascript">
+    function refreshWeibo() {
+        var mframe = $('#iframe').attr("src");
+        $("#iframe").attr("src", mframe);
+    }
 
+    setInterval("refreshWeibo()", 10000);
+    $("#spider").click(function () {
+        $.post('/start', JSON.stringify({
+                data:'start'
+            }),
+            function (data, status) {
+
+            })
+    })
+</script>
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var sexChart = echarts.init(document.getElementById('sex'));

@@ -115,4 +115,3 @@ def updateKeywords(keywords):  # keywords={'keywords':['key','word','s']}
     return True
 
 # updateKeywords({'keywords':['i春秋','奇安信','四川大学','scu']})
-print(getKeywords())
